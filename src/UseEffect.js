@@ -10,11 +10,8 @@ function App() {
   // Component On Mount
   // Component On Update
   useEffect(() => {
-    console.log("C", count);
-    return ()=>{
-      console.log("D",count);
-    }
-  }, [count]);
+    console.log("C", count, name);
+  }, [count, name]);
 
   return (
     <div className="App">
@@ -25,7 +22,7 @@ function App() {
           onChange={(e) => {
             console.log(e.target.value);
             setName(e.target.value);
-            // console.log("D");
+            console.log("D");
           }}
         />
 
