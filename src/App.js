@@ -1,42 +1,48 @@
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import Counter from "./Counter";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("");
+  const [counters, setCounters] = useState([]);
 
-  console.log("A");
+  const destroyCounter = (cid) =>
+    setCounters((prevCounters) =>
+      prevCounters.filter((counter) => counter.key !== cid)
+    );
 
-  // Component On Mount
-  // Component On Update
-  useEffect(() => {
-    console.log("C", count);
-    return ()=>{
-      console.log("D",count);
-    }
-  }, [count]);
+  // console.log(
+  //   "outer",
+  //   counters.map((c) => c.key)
+  // );
+
+  // const destroyCounter = (cid) => {
+  //   console.log(
+  //     "inner",
+  //     counters.map((c) => c.key)
+  //   );
+  //   setCounters(counters.filter((counter) => counter.key !== cid));
+  // };
 
   return (
     <div className="App">
       <header className="App-header">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => {
-            console.log(e.target.value);
-            setName(e.target.value);
-            // console.log("D");
-          }}
-        />
-
-        <p>{count}</p>
         <button
-          onClick={() => {
-            setCount(count + 1);
-            console.log("B");
-          }}>
-          Increment
+          onClick={() =>
+            setCounters((prevCounters) => {
+              const key = Date.now().toString();
+              return [
+                ...prevCounters,
+                <Counter
+                  id={key}
+                  key={key}
+                  onDestroy={destroyCounter}
+                />,
+              ];
+            })
+          }>
+          More
         </button>
+        {counters}
       </header>
     </div>
   );
