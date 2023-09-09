@@ -5,10 +5,14 @@ import Counter from "./Counter";
 function App() {
   const [counters, setCounters] = useState([]);
 
-  const destroyCounter = (cid) =>
-    setCounters((prevCounters) =>
-      prevCounters.filter((counter) => counter.key !== cid)
-    );
+  // const destroyCounter = (cid) => setCounters((prevCounters) => prevCounters.filter((counter) => counter.key !== cid));
+
+  const addCounter = () => {
+    const now = Date.now().toString();
+    setCounters([...counters, now]);
+  };
+
+  const removeCounter = (key) => setCounters(counters.filter((ctr) => ctr !== key));
 
   // console.log(
   //   "outer",
@@ -26,23 +30,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button
-          onClick={() =>
-            setCounters((prevCounters) => {
-              const key = Date.now().toString();
-              return [
-                ...prevCounters,
-                <Counter
-                  id={key}
-                  key={key}
-                  onDestroy={destroyCounter}
-                />,
-              ];
-            })
-          }>
-          More
-        </button>
-        {counters}
+        <button onClick={addCounter}>More</button>
+        {counters.map((ctr) => (
+          <Counter
+            id={ctr}
+            key={ctr}
+            onDestroy={removeCounter}
+          />
+        ))}
       </header>
     </div>
   );

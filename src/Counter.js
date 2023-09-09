@@ -6,18 +6,25 @@ function Counter({ onDestroy, id }) {
   const [direction, setDirection] = useState(1);
 
   useEffect(() => {
-    let iid;
-    if (isPaused) {
-      clearInterval(iid);
-    } else {
-      iid = setInterval(() => {
-        setCount((prevCount) => prevCount + direction);
-      }, 1e3);
+    if (!isPaused) {
+      const iid = setInterval(() => setCount((prevCount) => prevCount + direction), 1e3);
+      return () => clearInterval(iid);
     }
-    return () => {
-      clearInterval(iid);
-    };
   }, [isPaused, direction]);
+
+  // useEffect(() => {
+  //   let iid;
+  //   if (isPaused) {
+  //     clearInterval(iid);
+  //   } else {
+  //     iid = setInterval(() => {
+  //       setCount((prevCount) => prevCount + direction);
+  //     }, 1e3);
+  //   }
+  //   return () => {
+  //     clearInterval(iid);
+  //   };
+  // }, [isPaused, direction]);
 
   return (
     <>
